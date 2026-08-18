@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archivos (Drive)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, .55);
+            border-radius: 999px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    boxShadow: { soft: '0 12px 36px -18px rgba(15, 23, 42, 0.45)' }
+                }
+            }
+        }
+    </script>
+    <script>
+            (function () {
+                const root = document.documentElement;
+                const key = 'erp-theme';
+                function apply(mode) {
+                    const isDark = mode === 'dark';
+                    root.classList.toggle('dark', isDark);
+                    root.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+                }
+                const saved = localStorage.getItem(key);
+                const preferred = (saved === 'dark' || saved === 'light')
+                    ? saved
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                apply(preferred);
+                window.__erpTheme = {
+                    toggle() {
+                        const cur = root.classList.contains('dark') ? 'dark' : 'light';
+                        const next = cur === 'dark' ? 'light' : 'dark';
+                        localStorage.setItem(key, next);
+                        apply(next);
+                    }
+                };
+            })();
+    </script>
+</head>
+
+<body
+    class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-rose-500 selection:text-white">
+    <div class="pointer-events-none fixed inset-0 z-0">
+        <div class="absolute -top-24 -right-24 w-[520px] h-[520px] bg-rose-500/10 blur-3xl rounded-full"></div>
+        <div class="absolute -bottom-32 -left-24 w-[520px] h-[520px] bg-slate-500/10 blur-3xl rounded-full"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(244,63,94,0.06),_transparent_55%)]"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen">
+        <div class="flex-1 min-w-0 flex flex-col">
+            <header
+                class="sticky top-0 z-30 bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border-b border-slate-200/70 dark:border-white/10">
+                <div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 py-4 flex items-center gap-3">
+                    <button id="mobileNavBtn" type="button"
+                        class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                        aria-label="Abrir menú">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <div class="min-w-0">
+                        <div class="brand-font text-lg font-semibold tracking-tight">Archivos</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Gestión de carpetas, archivos y
+                            vistas</div>
+                    </div>
+
+                    <div class="flex-1 hidden md:block max-w-2xl mx-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input id="searchInput" type="text"
+                                class="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm"
+                                placeholder="Buscar en esta carpeta (nombre, tipo)...">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="window.__erpTheme.toggle()"
+                            class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                            aria-label="Cambiar tema">
+                            <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                            <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button id="btnUpload" type="button"
+                            class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/5 dark:bg-white/5 hover:bg-rose-500/10 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"></path>
+                            </svg>
+                            Subir
+                        </button>
+                        <button id="btnNewFolder" type="button"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold shadow-lg shadow-rose-600/20 hover:shadow-rose-600/30 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Nuevo
+                        </button>
+                        <div
+                            class="h-9 w-9 rounded-xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 pb-3">
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <button id="btnBack" type="button"
+                                class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Atrás
+                            </button>
+                            <nav class="min-w-0 flex items-center gap-1 text-sm" aria-label="Breadcrumb">
+                                <button type="button"
+                                    class="crumb px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/5 transition-colors font-semibold"
+                                    data-idx="0">Inicio</button>
+                                <span class="text-slate-400">/</span>
+                                <div id="crumbs" class="min-w-0 flex items-center gap-1 overflow-x-auto no-scrollbar">
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="btnToggleView" type="button"
+                                class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                                <svg id="viewIcon" class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h7M4 12h7M4 18h7M15 6h5M15 12h5M15 18h5"></path>
+                                </svg>
+                                <span id="viewLabel">Lista</span>
+                            </button>
+                            <select id="sortSelect"
+                                class="px-3 py-1.5 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm font-semibold">
+                                <option value="name_asc">Nombre (A–Z)</option>
+                                <option value="name_desc">Nombre (Z–A)</option>
+                                <option value="modified_desc">Modificado (reciente)</option>
+                                <option value="modified_asc">Modificado (antiguo)</option>
+                                <option value="size_desc">Tamaño (mayor)</option>
+                                <option value="size_asc">Tamaño (menor)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 max-w-[1400px] mx-auto w-full px-4 sm:px-6 py-6">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+                    <section class="xl:col-span-3">
+                        <div
+                            class="rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft p-4">
+                            <div class="flex items-center justify-between">
+                                <h2 class="brand-font font-semibold">Carpetas</h2>
+                                <button id="btnCollapseTree" type="button"
+                                    class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                                    aria-label="Contraer">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-3 border-t border-slate-200/70 dark:border-white/10 pt-3">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="h-9 w-9 rounded-lg border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-semibold">Mi Drive</div>
+                                        <div id="pathText" class="text-xs text-slate-500 dark:text-slate-400 truncate">/
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="treeWrap" class="mt-4">
+                                <div id="folderTree"
+                                    class="space-y-1 max-h-[420px] overflow-y-auto custom-scrollbar pr-1"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-4 rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft p-4">
+                            <h2 class="brand-font font-semibold">Accesos</h2>
+                            <div class="mt-3 space-y-1">
+                                <button type="button"
+                                    class="quickNav w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold"
+                                    data-target="__recent">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Recientes
+                                    </span>
+                                    <span id="recentCount" class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                                </button>
+                                <button type="button"
+                                    class="quickNav w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold"
+                                    data-target="__starred">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.519 4.674c.3.921-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.539-1.118l1.519-4.674a1 1 0 00-.363-1.118L2.1 10.101c-.783-.57-.38-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z">
+                                            </path>
+                                        </svg>
+                                        Favoritos
+                                    </span>
+                                    <span id="starCount" class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="xl:col-span-9">
+                        <div
+                            class="rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft overflow-hidden">
+                            <div
+                                class="px-4 md:px-5 py-4 border-b border-slate-200/70 dark:border-white/10 bg-slate-50/70 dark:bg-slate-800/30 flex items-center justify-between gap-3 flex-wrap">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <h2 class="brand-font font-semibold truncate" id="folderTitle">Inicio</h2>
+                                        <span id="folderMeta"
+                                            class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                                    </div>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sube archivos, crea
+                                        carpetas y navega por ruta.</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button id="btnUpload2" type="button"
+                                        class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12">
+                                            </path>
+                                        </svg>
+                                        Subir
+                                    </button>
+                                    <button id="btnNewFolder2" type="button"
+                                        class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-500 transition-all text-sm font-semibold shadow-lg shadow-rose-600/15">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Carpeta
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="dropZone" class="hidden">
+                                <div class="absolute inset-0 z-20 bg-rose-600/10 backdrop-blur-sm"></div>
+                                <div class="absolute inset-0 z-30 flex items-center justify-center p-6">
+                                    <div
+                                        class="w-full max-w-xl rounded-2xl border border-rose-200/60 dark:border-rose-500/20 bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl shadow-2xl p-6 text-center">
+                                        <div
+                                            class="mx-auto h-14 w-14 rounded-2xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/50 dark:border-rose-500/20 flex items-center justify-center">
+                                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="mt-4 text-lg brand-font font-semibold">Suelta aquí para subir</div>
+                                        <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">Los archivos se
+                                            agregan a la carpeta actual.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <div id="listView" class="block">
+                                    <div class="overflow-x-auto custom-scrollbar">
+                                        <table class="min-w-full text-sm">
+                                            <thead
+                                                class="bg-white/50 dark:bg-slate-900/20 text-slate-600 dark:text-slate-300">
+                                                <tr class="text-[11px] uppercase tracking-wider font-bold">
+                                                    <th class="px-4 py-3 text-left">Nombre</th>
+                                                    <th class="px-4 py-3 text-left">Tipo</th>
+                                                    <th class="px-4 py-3 text-left">Modificado</th>
+                                                    <th class="px-4 py-3 text-right">Tamaño</th>
+                                                    <th class="px-4 py-3 text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="itemsTbody"
+                                                class="divide-y divide-slate-200/70 dark:divide-white/10 bg-white/60 dark:bg-slate-900/20">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div id="gridView" class="hidden p-4 md:p-5">
+                                    <div id="gridWrap"
+                                        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="emptyState" class="hidden p-8 text-center">
+                                <div
+                                    class="mx-auto h-14 w-14 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div class="mt-4 brand-font font-semibold text-lg">Carpeta vacía</div>
+                                <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">Crea una carpeta o sube
+                                    archivos para empezar.</div>
+                                <div class="mt-5 flex items-center justify-center gap-2">
+                                    <button id="btnEmptyUpload" type="button"
+                                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12">
+                                            </path>
+                                        </svg>
+                                        Subir archivos
+                                    </button>
+                                    <button id="btnEmptyFolder" type="button"
+                                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold shadow-lg shadow-rose-600/15">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Crear carpeta
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <input id="fileInput" class="sr-only" type="file" multiple accept="image/*" />
+
+    <div id="modalNew" class="hidden fixed inset-0 z-[80]">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div
+                class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-white/10 shadow-2xl overflow-hidden">
+                <div
+                    class="px-5 py-4 border-b border-slate-200/70 dark:border-white/10 bg-slate-50/70 dark:bg-slate-800/30 flex items-center justify-between">
+                    <div>
+                        <h3 class="brand-font font-semibold">Crear carpeta</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Se crea en la carpeta actual</p>
+                    </div>
+                    <button type="button" data-close="modalNew"
+                        class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                        aria-label="Cerrar">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="newFolderForm" class="p-5 space-y-4">
+                    <div>
+                        <label
+                            class="text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Nombre</label>
+                        <input id="newFolderName" type="text"
+                            class="mt-1 w-full px-3 py-2 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm"
+                            placeholder="Ej: Contratos 2026" />
+                    </div>
+                    <div class="flex items-center justify-end gap-2">
+                        <button type="button" data-close="modalNew"
+                            class="px-4 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">Cancelar</button>
+                        <button type="submit"
+                            class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all text-sm font-semibold shadow-lg shadow-rose-600/15">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastHost" class="fixed z-[90] bottom-4 right-4 w-full max-w-sm space-y-2 px-4 md:px-0"></div>
+
+    <div id="mobileNav" class="hidden fixed inset-0 z-[70] lg:hidden">
+        <div id="mobileNavOverlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+        <div
+            class="absolute inset-y-0 left-0 w-[320px] max-w-[90vw] bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-white/10 shadow-2xl">
+            <div class="px-5 py-5 border-b border-slate-200/70 dark:border-white/10 flex items-center justify-between">
+                <div class="brand-font font-semibold">ERP System</div>
+                <button id="mobileNavClose" type="button"
+                    class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                    aria-label="Cerrar">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-3 space-y-1">
+                <a href="principal.html"
+                    class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">Inicio</a>
+                <a href="crm_dashboard.html"
+                    class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">CRM
+                    & Ventas</a>
+                <a href="wms/index.html"
+                    class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">WMS</a>
+                <a href="drive.html"
+                    class="block px-3 py-2 rounded-lg text-sm font-semibold bg-rose-600 text-white">Archivos</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (true) {
+            const $ = (id) => document.getElementById(id);
+            const esc = (s) => String(s)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+
+            const LS_STAR = "erp-drive-starred-v1";
+            const LS_RECENT = "erp-drive-recent-v1";
+            const LS_VIEW = "erp-drive-view-v1";
+            const LS_SORT = "erp-drive-sort-v1";
+            const LS_PATH = "erp-drive-path-v1";
+
+            const loadJson = (key, fallback) => {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (!raw) return fallback;
+                    return JSON.parse(raw);
+                } catch {
+                    return fallback;
+                }
+            };
+
+            const saveJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
+            const toast = (msg, tone = "ok") => {
+                const host = $("toastHost");
+                const tones = { ok: "bg-rose-600", warn: "bg-amber-500", err: "bg-red-600", info: "bg-slate-900" };
+                const el = document.createElement("div");
+                el.className = `rounded-xl shadow-2xl border border-white/10 px-4 py-3 ${tones[tone] || tones.ok} text-white flex items-start justify-between gap-3`;
+                el.innerHTML = `<div class="text-sm font-semibold">${esc(msg)}</div><button type="button" class="text-white/80 hover:text-white transition-colors" aria-label="Cerrar"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+                el.querySelector("button").addEventListener("click", () => el.remove());
+                host.appendChild(el);
+                setTimeout(() => el.remove(), 3200);
+            };
+
+            const copyText = async (text) => {
+                const value = String(text || "");
+                if (!value) return false;
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(value);
+                        return true;
+                    }
+                } catch { }
+                try {
+                    const ta = document.createElement("textarea");
+                    ta.value = value;
+                    ta.className = "sr-only";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand("copy");
+                    ta.remove();
+                    return true;
+                } catch {
+                    return false;
+                }
+            };
+
+            const sharePathToFileUrl = (sharePath) => {
+                const p = String(sharePath || "").trim();
+                if (!p) return "";
+                if (p.startsWith("\\\\")) {
+                    const parts = p.slice(2).split("\\").filter(Boolean);
+                    return "file://///" + parts.map(encodeURIComponent).join("/");
+                }
+                const drive = /^[a-zA-Z]:\\/.test(p) ? p : "";
+                if (drive) {
+                    const normalized = p.replace(/\\/g, "/");
+                    return "file:///" + normalized.split("/").map(encodeURIComponent).join("/");
+                }
+                return "";
+            };
+
+            const fileExt = (name) => {
+                const n = String(name || "");
+                const idx = n.lastIndexOf(".");
+                if (idx <= 0 || idx === n.length - 1) return "";
+                return n.slice(idx + 1).toLowerCase();
+            };
+
+            const fileIcon = (ext) => {
+                const e = String(ext || "").toLowerCase();
+                if (e === "pdf") return { bg: "bg-red-500/10", fg: "text-red-600 dark:text-red-300", label: "PDF" };
+                if (e === "xlsx" || e === "xls" || e === "csv") return { bg: "bg-emerald-500/10", fg: "text-emerald-600 dark:text-emerald-300", label: "XLS" };
+                if (e === "png" || e === "jpg" || e === "jpeg" || e === "webp" || e === "gif" || e === "bmp") return { bg: "bg-indigo-500/10", fg: "text-indigo-600 dark:text-indigo-300", label: "IMG" };
+                if (e === "doc" || e === "docx") return { bg: "bg-sky-500/10", fg: "text-sky-600 dark:text-sky-300", label: "DOC" };
+                return { bg: "bg-slate-500/10", fg: "text-slate-600 dark:text-slate-300", label: (e || "FILE").slice(0, 4).toUpperCase() };
+            };
+
+            const imageThumb = (url, sizeClass) => {
+                const safeUrl = esc(url || "");
+                return `<div class="${sizeClass} overflow-hidden border border-slate-200/60 dark:border-white/10 bg-slate-100/70 dark:bg-slate-800/40 flex items-center justify-center shrink-0"><img src="${safeUrl}" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" /></div>`;
+            };
+
+            const itemId = (item) => {
+                if (!item) return "";
+                if (item.type === "folder") return `F:${item.path || ""}`;
+                return `U:${item.url || ""}`;
+            };
+
+            const loadStarMap = () => loadJson(LS_STAR, {});
+            const saveStarMap = (m) => saveJson(LS_STAR, m);
+            const loadRecent = () => loadJson(LS_RECENT, []);
+            const saveRecent = (list) => saveJson(LS_RECENT, list);
+
+            const folderChildrenByPath = new Map();
+            const folderNameByPath = new Map([["", "Inicio"]]);
+            const itemById = new Map();
+
+            let currentPath = "";
+            let parentPath = null;
+            let quickMode = null;
+            let view = localStorage.getItem(LS_VIEW) === "grid" ? "grid" : "list";
+            const state = {
+                q: "",
+                sort: localStorage.getItem(LS_SORT) || "name_asc"
+            };
+
+            let lastItems = [];
+            let lastLabel = "Inicio";
+            let lastBreadcrumbs = [{ name: "DROPBOX", path: "" }];
+
+            const updateSideCounts = () => {
+                const stars = loadStarMap();
+                const rec = loadRecent();
+                $("recentCount").textContent = String(rec.length || 0);
+                $("starCount").textContent = String(Object.keys(stars).length || 0);
+            };
+
+            const setView = (next) => {
+                view = next === "grid" ? "grid" : "list";
+                localStorage.setItem(LS_VIEW, view);
+                $("viewLabel").textContent = view === "list" ? "Lista" : "Cuadrícula";
+                $("viewIcon").innerHTML = view === "list"
+                    ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h7M4 12h7M4 18h7M15 6h5M15 12h5M15 18h5"></path>`
+                    : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h7v7H4V6zm9 0h7v7h-7V6zM4 15h7v7H4v-7zm9 0h7v7h-7v-7z"></path>`;
+            };
+
+            const setSort = (next) => {
+                state.sort = String(next || "name_asc");
+                localStorage.setItem(LS_SORT, state.sort);
+                $("sortSelect").value = state.sort;
+            };
+
+            const buildBrowseUrl = (path) => {
+                const params = new URLSearchParams();
+                params.set("path", path || "");
+                params.set("fileOffset", "0");
+                params.set("fileLimit", "5000");
+                return `/api/browse?${params.toString()}`;
+            };
+
+            const fetchBrowse = async (path) => {
+                const res = await fetch(buildBrowseUrl(path), { headers: { "ngrok-skip-browser-warning": "true" } });
+                const data = await res.json();
+                if (!res.ok) throw new Error((data && data.error) ? data.error : "Error al cargar carpeta");
+                return data;
+            };
+
+            const renderCrumbs = () => {
+                const wrap = $("crumbs");
+                wrap.innerHTML = "";
+                const crumbs = Array.isArray(lastBreadcrumbs) ? lastBreadcrumbs : [{ name: "DROPBOX", path: "" }];
+                crumbs.slice(1).forEach((c, i, arr) => {
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "crumb px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/5 transition-colors font-semibold shrink-0";
+                    btn.dataset.path = c.path || "";
+                    btn.textContent = c.name || "—";
+                    wrap.appendChild(btn);
+                    if (i < arr.length - 1) {
+                        const sep = document.createElement("span");
+                        sep.className = "text-slate-400 shrink-0";
+                        sep.textContent = "/";
+                        wrap.appendChild(sep);
+                    }
+                });
+                $("pathText").textContent = "/" + String(currentPath || "");
+                const disabled = quickMode ? true : !parentPath;
+                $("btnBack").disabled = disabled;
+                $("btnBack").classList.toggle("opacity-50", disabled);
+                $("btnBack").classList.toggle("cursor-not-allowed", disabled);
+            };
+
+            const renderTree = () => {
+                const tree = $("folderTree");
+                tree.innerHTML = "";
+                const walk = (parent, level) => {
+                    const children = folderChildrenByPath.get(parent) || [];
+                    children.forEach((p) => {
+                        const name = folderNameByPath.get(p) || p.split("/").pop() || p;
+                        const row = document.createElement("button");
+                        row.type = "button";
+                        row.className = "w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold text-left";
+                        row.dataset.path = p;
+                        row.style.paddingLeft = `${12 + level * 14}px`;
+                        const active = !quickMode && currentPath === p;
+                        if (active) row.classList.add("bg-rose-500/10", "border", "border-rose-200/60", "dark:border-rose-500/20");
+                        row.innerHTML = `<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg><span class="truncate">${esc(name)}</span>`;
+                        tree.appendChild(row);
+                        if (folderChildrenByPath.has(p)) walk(p, level + 1);
+                    });
+                };
+                walk("", 0);
+            };
+
+            const sortItems = (items) => {
+                const mode = state.sort;
+                const folderFirst = (a, b) => (a.type === b.type ? 0 : (a.type === "folder" ? -1 : 1));
+                const byName = (a, b) => String(a.name).localeCompare(String(b.name), "es", { numeric: true, sensitivity: "base" });
+                const dir = mode.endsWith("_desc") ? -1 : 1;
+                return items.slice().sort((a, b) => {
+                    const ff = folderFirst(a, b);
+                    if (ff !== 0) return ff;
+                    return byName(a, b) * dir;
+                });
+            };
+
+            const filterItems = (items) => {
+                const q = state.q.trim().toLowerCase();
+                if (!q) return items;
+                return items.filter((it) => {
+                    const typeLabel = it.type === "folder" ? "carpeta" : (it.ext || "archivo");
+                    return `${it.name} ${typeLabel}`.toLowerCase().includes(q);
+                });
+            };
+
+            const rowActions = (id, starred, includeOpen = true) => {
+                const starCls = starred ? "text-amber-500" : "text-slate-400 hover:text-amber-500";
+                return `
+                  <button type="button" class="btnStar p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors ${starCls}" data-id="${esc(id)}" aria-label="Favorito">
+                    <svg class="w-4 h-4" fill="${starred ? "currentColor" : "none"}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.519 4.674c.3.921-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.539-1.118l1.519-4.674a1 1 0 00-.363-1.118L2.1 10.101c-.783-.57-.38-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z"></path></svg>
+                  </button>
+                  <button type="button" class="btnLocal p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-slate-400 hover:text-slate-900 dark:hover:text-white" data-id="${esc(id)}" aria-label="Abrir en PC">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17h4.5M4 16.5V6.75A2.75 2.75 0 016.75 4h10.5A2.75 2.75 0 0120 6.75v9.75A2.75 2.75 0 0117.25 19.25H6.75A2.75 2.75 0 014 16.5z"/></svg>
+                  </button>
+                  ${includeOpen ? `<button type="button" class="btnOpen p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-slate-400 hover:text-rose-500" data-id="${esc(id)}" aria-label="Abrir"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>` : ``}
+                `;
+            };
+
+            const renderList = (items) => {
+                const tbody = $("itemsTbody");
+                tbody.innerHTML = "";
+                const stars = loadStarMap();
+                items.forEach((item) => {
+                    const id = itemId(item);
+                    const starred = !!stars[id];
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-rose-50/40 dark:hover:bg-rose-500/5 transition-colors";
+                    const type = item.type === "folder" ? "Carpeta" : String(item.ext || "Archivo").toUpperCase();
+                    const icon = item.type === "folder"
+                        ? `<div class="h-9 w-9 rounded-xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/40 dark:border-rose-500/20 flex items-center justify-center"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg></div>`
+                        : (item.isImage && item.url
+                            ? imageThumb(item.url, "h-9 w-9 rounded-xl")
+                            : (() => {
+                                const meta = fileIcon(item.ext);
+                                return `<div class="h-9 w-9 rounded-xl ${meta.bg} ${meta.fg} border border-slate-200/60 dark:border-white/10 flex items-center justify-center font-mono text-xs font-bold">${esc(meta.label)}</div>`;
+                            })());
+                    tr.innerHTML = `
+                      <td class="px-4 py-3">
+                        <button type="button" class="btnOpen w-full flex items-center gap-3 text-left" data-id="${esc(id)}">
+                          ${icon}
+                          <div class="min-w-0">
+                            <div class="font-semibold truncate">${esc(item.name)}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${item.type === "folder" ? "Carpeta" : "Archivo"}</div>
+                          </div>
+                        </button>
+                      </td>
+                      <td class="px-4 py-3 text-slate-700 dark:text-slate-200">${esc(type)}</td>
+                      <td class="px-4 py-3 text-slate-700 dark:text-slate-200">—</td>
+                      <td class="px-4 py-3 text-right font-mono font-semibold text-slate-700 dark:text-slate-200">—</td>
+                      <td class="px-4 py-3 text-right">
+                        <div class="inline-flex items-center gap-1 justify-end">
+                          ${rowActions(id, starred)}
+                        </div>
+                      </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            const renderGrid = (items) => {
+                const wrap = $("gridWrap");
+                wrap.innerHTML = "";
+                const stars = loadStarMap();
+                items.forEach((item) => {
+                    const id = itemId(item);
+                    const starred = !!stars[id];
+                    const card = document.createElement("div");
+                    card.className = "group rounded-xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 hover:bg-rose-50/40 dark:hover:bg-rose-500/5 transition-colors p-3";
+                    const icon = item.type === "folder"
+                        ? `<div class="h-10 w-10 rounded-xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/40 dark:border-rose-500/20 flex items-center justify-center"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg></div>`
+                        : (item.isImage && item.url
+                            ? imageThumb(item.url, "h-14 w-14 rounded-2xl")
+                            : (() => {
+                                const meta = fileIcon(item.ext);
+                                return `<div class="h-10 w-10 rounded-xl ${meta.bg} ${meta.fg} border border-slate-200/60 dark:border-white/10 flex items-center justify-center font-mono text-xs font-bold">${esc(meta.label)}</div>`;
+                            })());
+                    card.innerHTML = `
+                      <div class="flex items-start justify-between gap-2">
+                        <button type="button" class="btnOpen" data-id="${esc(id)}" aria-label="Abrir">
+                          ${icon}
+                        </button>
+                        <div class="inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          ${rowActions(id, starred, false)}
+                        </div>
+                      </div>
+                      <button type="button" class="btnOpen mt-3 w-full text-left" data-id="${esc(id)}">
+                        <div class="font-semibold truncate">${esc(item.name)}</div>
+                        <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">${item.type === "folder" ? "Carpeta" : "Archivo"}</div>
+                      </button>
+                    `;
+                    wrap.appendChild(card);
+                });
+            };
+
+            const renderAll = () => {
+                const baseItems = quickMode === "__recent"
+                    ? loadRecent().slice().sort((a, b) => Number(b.at || 0) - Number(a.at || 0)).map((r) => r.item).filter(Boolean)
+                    : (quickMode === "__starred"
+                        ? Object.values(loadStarMap()).map((v) => v.item).filter(Boolean)
+                        : lastItems);
+
+                const filtered = filterItems(sortItems(baseItems));
+                $("emptyState").classList.toggle("hidden", filtered.length !== 0);
+                const label = quickMode === "__recent" ? "Recientes" : (quickMode === "__starred" ? "Favoritos" : lastLabel);
+                $("folderTitle").textContent = label;
+                $("folderMeta").textContent = `${filtered.length} ítems`;
+
+                renderCrumbs();
+                renderTree();
+                updateSideCounts();
+
+                if (view === "list") {
+                    $("listView").classList.remove("hidden");
+                    $("gridView").classList.add("hidden");
+                    renderList(filtered);
+                } else {
+                    $("listView").classList.add("hidden");
+                    $("gridView").classList.remove("hidden");
+                    renderGrid(filtered);
+                }
+            };
+
+            const browse = async (path = "") => {
+                quickMode = null;
+                const storageTextEl = $("storageText");
+                if (storageTextEl) storageTextEl.textContent = "—";
+                const storageBarEl = $("storageBar");
+                if (storageBarEl) storageBarEl.style.width = "0%";
+                try {
+                    const data = await fetchBrowse(path);
+                    currentPath = data.currentPath || "";
+                    parentPath = data.parentPath === undefined ? null : data.parentPath;
+                    localStorage.setItem(LS_PATH, currentPath);
+                    lastBreadcrumbs = data.breadcrumbs || [{ name: "DROPBOX", path: "" }];
+                    const parts = String(currentPath || "").split("/").filter(Boolean);
+                    lastLabel = parts.length ? parts[parts.length - 1] : "Inicio";
+
+                    const folders = (data.folders || []).map((f) => ({ type: "folder", name: f.name, path: f.path, sharePath: f.sharePath || "" }));
+                    const files = (data.files || []).map((f) => ({ type: "file", name: f.name, path: f.path, url: f.url, sharePath: f.sharePath || "", isImage: !!f.isImage, ext: fileExt(f.name) }));
+                    lastItems = folders.concat(files);
+
+                    const parentKey = currentPath || "";
+                    folderChildrenByPath.set(parentKey, folders.map((f) => f.path));
+                    folders.forEach((f) => folderNameByPath.set(f.path, f.name));
+
+                    itemById.clear();
+                    lastItems.forEach((it) => itemById.set(itemId(it), it));
+                    renderAll();
+                } catch (e) {
+                    toast(e && e.message ? e.message : "Error al cargar", "err");
+                }
+            };
+
+            let liveRefreshTimer = null;
+            let liveSource = null;
+
+            const scheduleLiveRefresh = () => {
+                if (liveRefreshTimer) clearTimeout(liveRefreshTimer);
+                liveRefreshTimer = setTimeout(() => {
+                    browse(currentPath);
+                }, 350);
+            };
+
+            const shouldRefreshForChangedPath = (changedPath) => {
+                const p = String(changedPath || "").replaceAll("\\", "/");
+                const cur = String(currentPath || "").replaceAll("\\", "/");
+                if (!p) return true;
+                if (!cur) return true;
+                if (p === cur) return true;
+                if (p.startsWith(cur + "/")) return true;
+                const parent = cur.includes("/") ? cur.slice(0, cur.lastIndexOf("/")) : "";
+                if (parent && p === parent) return true;
+                return false;
+            };
+
+            const startLiveUpdates = () => {
+                if (liveSource) return;
+                try {
+                    liveSource = new EventSource("/api/events");
+                    liveSource.onmessage = (evt) => {
+                        let msg = null;
+                        try {
+                            msg = JSON.parse(evt.data || "{}");
+                        } catch {
+                            msg = null;
+                        }
+                        if (!msg || msg.type !== "fs") return;
+                        const paths = Array.isArray(msg.paths) ? msg.paths : [];
+                        if (!paths.length) return;
+                        if (paths.some(shouldRefreshForChangedPath)) {
+                            scheduleLiveRefresh();
+                        }
+                    };
+                    liveSource.onerror = () => { };
+                } catch { }
+            };
+
+            const openModal = (id) => $(id).classList.remove("hidden");
+            const closeModal = (id) => $(id).classList.add("hidden");
+
+            const openNewFolder = () => {
+                openModal("modalNew");
+                setTimeout(() => $("newFolderName").focus(), 0);
+            };
+
+            window.addEventListener("error", (e) => {
+                const msg = e && e.message ? String(e.message) : "Error en la página";
+                toast(msg, "err");
+            });
+            window.addEventListener("unhandledrejection", (e) => {
+                const msg = e && e.reason && e.reason.message ? String(e.reason.message) : "Error en promesa";
+                toast(msg, "err");
+            });
+
+            const openFilePicker = (source = "unknown") => {
+                toast("Selecciona tu(s) archivo(s) para subir…", "info");
+
+                const temp = document.createElement("input");
+                temp.type = "file";
+                temp.multiple = true;
+                temp.accept = "image/*";
+                temp.className = "sr-only";
+                temp.addEventListener("change", async () => {
+                    const files = temp.files;
+                    document.body.removeChild(temp);
+                    if (!files || !files.length) return;
+                    try {
+                        toast("Subiendo archivo(s)…", "info");
+                        await uploadFiles(files);
+                    } catch (err) {
+                        toast(err && err.message ? err.message : "Error al subir", "err");
+                    }
+                }, { once: true });
+                document.body.appendChild(temp);
+                temp.click();
+            };
+
+            const uploadFiles = async (fileList) => {
+                const files = Array.from(fileList || []);
+                if (!files.length) return;
+                let ok = 0;
+                for (const f of files) {
+                    const form = new FormData();
+                    form.append("currentPath", currentPath);
+                    form.append("image", f);
+                    const res = await fetch("/upload", { method: "POST", headers: { "ngrok-skip-browser-warning": "true" }, body: form });
+                    let data = null;
+                    try {
+                        data = await res.json();
+                    } catch (_) {
+                        try {
+                            const txt = await res.text();
+                            data = { error: txt };
+                        } catch {
+                            data = {};
+                        }
+                    }
+                    if (!res.ok) {
+                        const msg = (data && data.error) ? String(data.error) : "Error al subir";
+                        if (res.status === 401) {
+                            throw new Error("Acceso no autorizado. Recarga la página para re-autenticar y vuelve a intentar.");
+                        }
+                        throw new Error(msg);
+                    }
+                    ok += 1;
+                }
+                toast(`${ok} archivo(s) subido(s)`, "ok");
+                await browse(currentPath);
+            };
+
+            $("btnToggleView").addEventListener("click", () => {
+                setView(view === "list" ? "grid" : "list");
+                renderAll();
+            });
+
+            $("sortSelect").addEventListener("change", (e) => {
+                setSort(e.target.value);
+                renderAll();
+            });
+
+            $("searchInput").addEventListener("input", (e) => {
+                state.q = e.target.value || "";
+                renderAll();
+            });
+
+            $("btnBack").addEventListener("click", () => {
+                if (quickMode) {
+                    quickMode = null;
+                    renderAll();
+                    return;
+                }
+                if (!parentPath) return;
+                browse(parentPath || "");
+            });
+
+            document.addEventListener("click", (e) => {
+                const t = e.target;
+                if (!(t instanceof Element)) return;
+                const crumb = t.closest(".crumb");
+                if (crumb) {
+                    const idx = crumb.getAttribute("data-idx");
+                    if (idx === "0") browse("");
+                    const p = crumb.getAttribute("data-path");
+                    if (p !== null) browse(p || "");
+                    return;
+                }
+
+                const treeBtn = t.closest("#folderTree [data-path]");
+                if (treeBtn) {
+                    browse(treeBtn.getAttribute("data-path") || "");
+                    return;
+                }
+
+                const quick = t.closest(".quickNav");
+                if (quick) {
+                    quickMode = quick.getAttribute("data-target") || null;
+                    renderAll();
+                    return;
+                }
+
+                const starBtn = t.closest(".btnStar");
+                if (starBtn) {
+                    const id = starBtn.getAttribute("data-id") || "";
+                    const it = itemById.get(id) || null;
+                    if (!it) return;
+                    const map = loadStarMap();
+                    if (map[id]) {
+                        delete map[id];
+                        saveStarMap(map);
+                        toast("Quitado de favoritos", "info");
+                    } else {
+                        map[id] = { item: it };
+                        saveStarMap(map);
+                        toast("Agregado a favoritos", "ok");
+                    }
+                    updateSideCounts();
+                    renderAll();
+                    return;
+                }
+
+                const localBtn = t.closest(".btnLocal");
+                if (localBtn) {
+                    const id = localBtn.getAttribute("data-id") || "";
+                    const it = itemById.get(id) || null;
+                    if (!it) return;
+                    const sp = String(it.sharePath || "").trim();
+                    if (!sp) {
+                        toast("Ruta de red no configurada en el servidor (SHARE_ROOT)", "warn");
+                        return;
+                    }
+                    const proto = "empresa-drive://open?path=" + encodeURIComponent(sp);
+                    try { window.location.href = proto; } catch { }
+                    copyText(sp);
+                    const fileUrl = sharePathToFileUrl(sp);
+                    if (fileUrl) { try { window.open(fileUrl, "_blank", "noopener"); } catch { } }
+                    toast("Intentando abrir en tu PC. Ruta copiada.", "ok");
+                    return;
+                }
+
+                const openBtn = t.closest(".btnOpen");
+                if (openBtn) {
+                    const id = openBtn.getAttribute("data-id") || "";
+                    const it = itemById.get(id) || null;
+                    if (!it) return;
+                    const rec = loadRecent();
+                    rec.unshift({ at: Date.now(), item: it });
+                    saveRecent(rec.slice(0, 50));
+                    updateSideCounts();
+                    if (it.type === "folder") {
+                        browse(it.path || "");
+                    } else if (it.url) {
+                        window.open(it.url, "_blank", "noopener");
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(new URL(it.url, window.location.origin).toString()).catch(() => { });
+                        }
+                        toast("Enlace copiado", "ok");
+                    }
+                    return;
+                }
+            });
+
+            $("btnNewFolder").addEventListener("click", openNewFolder);
+            $("btnNewFolder2").addEventListener("click", openNewFolder);
+            $("btnEmptyFolder").addEventListener("click", openNewFolder);
+
+            $("btnUpload").addEventListener("click", () => openFilePicker("btnUpload"));
+            $("btnUpload2").addEventListener("click", () => openFilePicker("btnUpload2"));
+            $("btnEmptyUpload").addEventListener("click", () => openFilePicker("btnEmptyUpload"));
+
+            $("fileInput").addEventListener("change", async (e) => {
+                const files = e.target.files;
+                e.target.value = "";
+                try {
+                    toast("Subiendo archivo(s)…", "info");
+                    await uploadFiles(files);
+                } catch (err) {
+                    toast(err && err.message ? err.message : "Error al subir", "err");
+                }
+            });
+
+            $("newFolderForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const folderName = $("newFolderName").value.trim();
+                if (!folderName) {
+                    toast("Escribe el nombre de la carpeta", "warn");
+                    return;
+                }
+                try {
+                    const res = await fetch("/api/create-folder", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+                        body: JSON.stringify({ currentPath, folderName })
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) throw new Error((data && data.error) ? data.error : "Error al crear carpeta");
+                    $("newFolderName").value = "";
+                    closeModal("modalNew");
+                    toast("Carpeta creada", "ok");
+                    await browse(currentPath);
+                } catch (err) {
+                    toast(err && err.message ? err.message : "Error al crear carpeta", "err");
+                }
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeModal("modalNew");
+            });
+
+            $("modalNew").addEventListener("click", (e) => {
+                if (e.target === $("modalNew") || e.target === $("modalNew").firstElementChild) closeModal("modalNew");
+            });
+
+            $("mobileNavBtn").addEventListener("click", () => $("mobileNav").classList.remove("hidden"));
+            $("mobileNavClose").addEventListener("click", () => $("mobileNav").classList.add("hidden"));
+            $("mobileNavOverlay").addEventListener("click", () => $("mobileNav").classList.add("hidden"));
+
+            $("btnCollapseTree").addEventListener("click", () => $("treeWrap").classList.toggle("hidden"));
+
+            let dragDepth = 0;
+            const showDrop = () => $("dropZone").classList.remove("hidden");
+            const hideDrop = () => $("dropZone").classList.add("hidden");
+            ["dragenter", "dragover"].forEach((evt) => {
+                document.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    dragDepth += 1;
+                    showDrop();
+                });
+            });
+            document.addEventListener("dragleave", (e) => {
+                e.preventDefault();
+                dragDepth = Math.max(0, dragDepth - 1);
+                if (dragDepth === 0) hideDrop();
+            });
+            document.addEventListener("drop", async (e) => {
+                e.preventDefault();
+                dragDepth = 0;
+                hideDrop();
+                const files = e.dataTransfer ? e.dataTransfer.files : null;
+                if (!files || !files.length) return;
+                try {
+                    await uploadFiles(files);
+                } catch (err) {
+                    toast(err && err.message ? err.message : "Error al subir", "err");
+                }
+            });
+
+            setView(view);
+            setSort(state.sort);
+            updateSideCounts();
+            browse(localStorage.getItem(LS_PATH) || "");
+            startLiveUpdates();
+        } else {
+            const pathLabel = document.getElementById("pathLabel");
+            const breadcrumbsEl = document.getElementById("breadcrumbs");
+            const statusEl = document.getElementById("status");
+            const folderListEl = document.getElementById("folderList");
+            const fileListEl = document.getElementById("fileList");
+            const noFoldersEl = document.getElementById("noFolders");
+            const noFilesEl = document.getElementById("noFiles");
+            const imageInput = document.getElementById("imageInput");
+            const uploadBtn = document.getElementById("uploadBtn");
+            const newFolderNameInput = document.getElementById("newFolderName");
+            const createFolderBtn = document.getElementById("createFolderBtn");
+            const backBtn = document.getElementById("backBtn");
+            const searchInput = document.getElementById("searchInput");
+            const loadMoreBtn = document.getElementById("loadMoreBtn");
+            const fileCountsEl = document.getElementById("fileCounts");
+            const sentinelEl = document.getElementById("sentinel");
+            const viewGridBtn = document.getElementById("viewGridBtn");
+            const viewCompactBtn = document.getElementById("viewCompactBtn");
+            const themeToggleBtn = document.getElementById("themeToggleBtn");
+            const openUploadModalBtn = document.getElementById("openUploadModalBtn");
+            const openFolderModalBtn = document.getElementById("openFolderModalBtn");
+            const uploadModalEl = document.getElementById("uploadModal");
+            const folderModalEl = document.getElementById("folderModal");
+            const folderTitleEl = document.getElementById("folderTitle");
+            const folderMetaEl = document.getElementById("folderMeta");
+            const rootEl = document.documentElement;
+
+            let currentPath = "";
+            const FILE_PAGE_SIZE = 120;
+            let filesOffset = 0;
+            let filesTotal = 0;
+            let filesHasMore = false;
+            let loadedFiles = [];
+            let isBusy = false;
+            let viewMode = localStorage.getItem("viewMode") || "grid";
+
+            function escapeHtml(text) {
+                return String(text).replace(/[&<>"']/g, function (char) {
+                    const map = {
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#039;"
+                    };
+                    return map[char];
+                });
+            }
+
+            function fileExt(name) {
+                const n = String(name || "");
+                const idx = n.lastIndexOf(".");
+                if (idx <= 0 || idx === n.length - 1) return "";
+                return n.slice(idx + 1).toLowerCase();
+            }
+
+            function setStatus(message, type = "info") {
+                statusEl.textContent = message || "";
+                statusEl.classList.remove("text-red-600", "text-red-400", "text-emerald-600", "text-emerald-400", "text-slate-700", "text-slate-200");
+                if (type === "error") {
+                    statusEl.classList.add("text-red-600", "dark:text-red-400");
+                } else if (type === "success") {
+                    statusEl.classList.add("text-emerald-600", "dark:text-emerald-400");
+                } else {
+                    statusEl.classList.add("text-slate-700", "dark:text-slate-200");
+                }
+            }
+
+            function openModal(modalEl) {
+                if (!modalEl) return;
+                modalEl.classList.remove("hidden");
+                document.body.classList.add("overflow-hidden");
+            }
+
+            function closeModal(modalEl) {
+                if (!modalEl) return;
+                modalEl.classList.add("hidden");
+                document.body.classList.remove("overflow-hidden");
+            }
+
+            openUploadModalBtn.addEventListener("click", () => {
+                openModal(uploadModalEl);
+                setTimeout(() => imageInput.focus(), 0);
+            });
+
+            openFolderModalBtn.addEventListener("click", () => {
+                openModal(folderModalEl);
+                setTimeout(() => newFolderNameInput.focus(), 0);
+            });
+
+            document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-close-modal");
+                    const el = id ? document.getElementById(id) : null;
+                    closeModal(el);
+                });
+            });
+
+            [uploadModalEl, folderModalEl].forEach((modalEl) => {
+                if (!modalEl) return;
+                modalEl.addEventListener("click", (e) => {
+                    const backdropEl = modalEl.firstElementChild;
+                    if (e.target === modalEl || e.target === backdropEl) closeModal(modalEl);
+                });
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key !== "Escape") return;
+                closeModal(uploadModalEl);
+                closeModal(folderModalEl);
+            });
+
+            function setBusy(nextBusy) {
+                isBusy = nextBusy;
+                uploadBtn.disabled = nextBusy;
+                createFolderBtn.disabled = nextBusy;
+                backBtn.disabled = nextBusy;
+                loadMoreBtn.disabled = nextBusy;
+            }
+
+            function buildBrowseUrl(path, offset) {
+                const params = new URLSearchParams();
+                params.set("path", path || "");
+                params.set("fileOffset", String(offset || 0));
+                params.set("fileLimit", String(FILE_PAGE_SIZE));
+                const q = (searchInput.value || "").trim();
+                if (q) params.set("q", q);
+                return `/api/browse?${params.toString()}`;
+            }
+
+            async function fetchBrowse(path, offset) {
+                const res = await fetch(buildBrowseUrl(path, offset), {
+                    headers: { "ngrok-skip-browser-warning": "true" }
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    const msg = data && data.error ? data.error : "Error al cargar carpeta";
+                    throw new Error(msg);
+                }
+                return data;
+            }
+
+            function updateCounts() {
+                const visible = loadedFiles.length;
+                fileCountsEl.textContent = filesTotal
+                    ? `${visible} / ${filesTotal} archivo(s)`
+                    : (visible ? `${visible} archivo(s)` : "");
+
+                if (folderMetaEl) {
+                    const foldersCount = folderListEl && folderListEl.children ? folderListEl.children.length : 0;
+                    if (filesTotal || visible || foldersCount) {
+                        const fLabel = foldersCount === 1 ? "carpeta" : "carpetas";
+                        const aLabel = (filesTotal || visible) === 1 ? "archivo" : "archivos";
+                        const fileCount = filesTotal || visible;
+                        folderMetaEl.textContent = `${foldersCount} ${fLabel} · ${fileCount} ${aLabel}`;
+                    } else {
+                        folderMetaEl.textContent = "";
+                    }
+                }
+            }
+
+            function renderFilesFromState() {
+                const files = loadedFiles;
+                updateCounts();
+
+                if (!files.length) {
+                    noFilesEl.style.display = loadedFiles.length ? "none" : "block";
+                    fileListEl.innerHTML = "";
+                    return;
+                }
+
+                noFilesEl.style.display = "none";
+                if (viewMode === "compact") {
+                    fileListEl.className = "file-list overflow-x-auto rounded-2xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-white/5";
+                    fileListEl.innerHTML = `
+          <table class="min-w-full text-sm">
+            <thead class="bg-white/50 dark:bg-white/5 text-slate-600 dark:text-slate-300">
+              <tr class="text-[11px] uppercase tracking-wider font-bold">
+                <th class="px-4 py-3 text-left">Nombre</th>
+                <th class="px-4 py-3 text-left">Tipo</th>
+                <th class="px-4 py-3 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200/70 dark:divide-white/10">
+              ${files.map((file) => {
+                        const ext = fileExt(file.name);
+                        const typeLabel = file.isImage ? "Imagen" : (ext ? ext.toUpperCase() : "Archivo");
+                        return `
+                <tr class="hover:bg-slate-50/70 dark:hover:bg-white/5 transition-colors">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                      <a href="${file.url}" target="_blank" rel="noreferrer" class="h-9 w-9 rounded-xl overflow-hidden bg-slate-200 dark:bg-white/10 flex items-center justify-center shrink-0">
+                        ${file.isImage
+                                ? `<img class="h-9 w-9 object-cover" src="${file.url}" loading="lazy" decoding="async" alt="${escapeHtml(file.name)}">`
+                                : `<i class="fa-solid fa-file text-slate-500 dark:text-slate-400 text-sm"></i>`
+                            }
+                      </a>
+                      <div class="min-w-0">
+                        <a href="${file.url}" target="_blank" rel="noreferrer" class="block font-semibold truncate hover:underline decoration-sky-400/50">${escapeHtml(file.name)}</a>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">${typeLabel}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-slate-500 dark:text-slate-400">${typeLabel}</td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <a href="${file.url}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-semibold border border-slate-200 bg-white/70 hover:bg-white shadow-sm dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        Abrir
+                      </a>
+                      <button class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-semibold bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-900/20 copy-btn" data-url="${escapeHtml(file.url)}">
+                        <i class="fa-solid fa-link text-xs"></i>
+                        Copiar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+                    }).join("")}
+            </tbody>
+          </table>
+        `;
+                } else {
+                    fileListEl.className = "file-list grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+                    fileListEl.innerHTML = files.map(file => `
+          <div class="file-card rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm dark:border-white/10 dark:bg-white/5">
+            <a href="${file.url}" target="_blank" rel="noreferrer" class="block">
+              ${file.isImage
+                            ? `<img class="w-full h-56 object-cover rounded-xl bg-slate-200 block dark:bg-white/10" src="${file.url}" loading="lazy" decoding="async" alt="${escapeHtml(file.name)}">`
+                            : `<div class="non-image-file flex items-center justify-center h-56 rounded-xl bg-white/70 font-semibold text-center p-3 dark:bg-white/10">Archivo</div>`
+                        }
+            </a>
+            <div class="file-name mt-2 text-sm break-words">${escapeHtml(file.name)}</div>
+            <div class="file-actions flex gap-2 mt-2 items-center flex-wrap">
+              <button class="small-btn px-3 py-2 rounded-xl text-sm border border-slate-200 bg-white/70 hover:bg-white shadow-sm dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 copy-btn" data-url="${escapeHtml(file.url)}">Copiar link</button>
+            </div>
+          </div>
+        `).join("");
+                }
+
+                fileListEl.querySelectorAll(".copy-btn").forEach(btn => {
+                    btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const url = btn.dataset.url || "";
+                        try {
+                            const absolute = new URL(url, window.location.origin).toString();
+                            if (navigator.clipboard && navigator.clipboard.writeText) {
+                                await navigator.clipboard.writeText(absolute);
+                            } else {
+                                const ta = document.createElement("textarea");
+                                ta.value = absolute;
+                                document.body.appendChild(ta);
+                                ta.select();
+                                document.execCommand("copy");
+                                ta.remove();
+                            }
+                            setStatus("Link copiado al portapapeles.", "success");
+                        } catch (err) {
+                            setStatus("No se pudo copiar el link.", "error");
+                        }
+                    });
+                });
+            }
+
+            function refreshViewButtons() {
+                const activeClasses = ["bg-brand-600", "text-white", "border-brand-600", "dark:bg-brand-500", "dark:border-brand-500"];
+                const inactiveClasses = ["bg-white/70", "text-slate-900", "border-slate-200", "hover:bg-white", "dark:bg-white/5", "dark:text-white", "dark:border-white/10", "dark:hover:bg-white/10"];
+                [viewGridBtn, viewCompactBtn].forEach(btn => {
+                    btn.classList.remove(...activeClasses, ...inactiveClasses);
+                    btn.classList.add(...inactiveClasses);
+                });
+                const activeBtn = viewMode === "compact" ? viewCompactBtn : viewGridBtn;
+                activeBtn.classList.remove(...inactiveClasses);
+                activeBtn.classList.add(...activeClasses);
+            }
+
+            async function browse(path = "") {
+                setBusy(true);
+                setStatus("Cargando...", "info");
+                folderListEl.innerHTML = "";
+                fileListEl.innerHTML = "";
+                loadMoreBtn.style.display = "none";
+                fileCountsEl.textContent = "";
+                loadedFiles = [];
+                filesOffset = 0;
+
+                try {
+                    const data = await fetchBrowse(path, 0);
+
+                    currentPath = data.currentPath || "";
+                    localStorage.setItem("currentPath", currentPath);
+
+                    renderPath(data);
+                    renderFolders(data.folders || []);
+                    filesTotal = Number(data.filesTotal) || 0;
+                    filesHasMore = !!data.filesHasMore;
+                    filesOffset = (Number(data.filesOffset) || 0) + (data.files ? data.files.length : 0);
+                    loadedFiles = (data.files || []).slice();
+                    renderFilesFromState();
+                    renderLoadMore();
+                    renderBackButton(data.parentPath);
+                    setStatus("", "info");
+                } catch (error) {
+                    setStatus(error && error.message ? error.message : "Error de conexión.", "error");
+                } finally {
+                    setBusy(false);
+                }
+            }
+
+            viewGridBtn.addEventListener("click", () => {
+                if (viewMode !== "grid") {
+                    viewMode = "grid";
+                    localStorage.setItem("viewMode", viewMode);
+                    refreshViewButtons();
+                    renderFilesFromState();
+                }
+            });
+
+            viewCompactBtn.addEventListener("click", () => {
+                if (viewMode !== "compact") {
+                    viewMode = "compact";
+                    localStorage.setItem("viewMode", viewMode);
+                    refreshViewButtons();
+                    renderFilesFromState();
+                }
+            });
+
+            function renderPath(data) {
+                const parts = String(currentPath || "").split("/").filter(Boolean);
+                const name = parts.length ? parts[parts.length - 1] : "DROPBOX";
+                pathLabel.textContent = name;
+                if (folderTitleEl) folderTitleEl.textContent = name;
+
+                breadcrumbsEl.innerHTML = (data.breadcrumbs || []).map(crumb => {
+                    return `<span class="crumb cursor-pointer text-sky-600 hover:underline dark:text-sky-400" data-path="${escapeHtml(crumb.path)}">${escapeHtml(crumb.name)}</span>`;
+                }).join(" / ");
+
+                breadcrumbsEl.querySelectorAll(".crumb").forEach(el => {
+                    el.addEventListener("click", () => {
+                        browse(el.dataset.path || "");
+                    });
+                });
+            }
+
+            function renderFolders(folders) {
+                if (!folders.length) {
+                    noFoldersEl.style.display = "block";
+                    folderListEl.innerHTML = "";
+                    return;
+                }
+
+                noFoldersEl.style.display = "none";
+                folderListEl.innerHTML = folders.map(folder => `
+        <div class="folder-card rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm dark:border-white/10 dark:bg-white/5">
+          <button class="w-full text-left font-semibold px-3 py-3 rounded-2xl hover:bg-slate-50/80 dark:hover:bg-white/5" data-path="${escapeHtml(folder.path)}">
+            <span class="inline-flex items-center gap-2">
+              <svg class="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path>
+              </svg>
+              <span class="truncate">${escapeHtml(folder.name)}</span>
+            </span>
+          </button>
+        </div>
+      `).join("");
+
+                folderListEl.querySelectorAll("button").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        browse(btn.dataset.path || "");
+                    });
+                });
+            }
+
+            function renderBackButton(parentPath) {
+                backBtn.style.display = parentPath === null ? "none" : "inline-block";
+                backBtn.onclick = () => browse(parentPath || "");
+            }
+
+            function renderLoadMore() {
+                loadMoreBtn.style.display = filesHasMore ? "inline-block" : "none";
+                updateCounts();
+            }
+
+            async function loadMore() {
+                if (!filesHasMore || isBusy) return;
+                setBusy(true);
+                setStatus("Cargando más...", "info");
+
+                try {
+                    const data = await fetchBrowse(currentPath, filesOffset);
+                    const nextFiles = data.files || [];
+                    loadedFiles = loadedFiles.concat(nextFiles);
+                    filesTotal = Number(data.filesTotal) || filesTotal;
+                    filesHasMore = !!data.filesHasMore;
+                    filesOffset = (Number(data.filesOffset) || filesOffset) + nextFiles.length;
+                    renderFilesFromState();
+                    renderLoadMore();
+                    setStatus("", "info");
+                } catch (error) {
+                    setStatus(error && error.message ? error.message : "Error al cargar más.", "error");
+                } finally {
+                    setBusy(false);
+                }
+            }
+
+            uploadBtn.addEventListener("click", async () => {
+                const file = imageInput.files[0];
+
+                if (!file) {
+                    setStatus("Selecciona una imagen.", "error");
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("currentPath", currentPath);
+                formData.append("image", file);
+
+                setBusy(true);
+                setStatus("Subiendo imagen...", "info");
+
+                try {
+                    const res = await fetch("/upload", {
+                        method: "POST",
+                        headers: { "ngrok-skip-browser-warning": "true" },
+                        body: formData
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        setStatus(data.error || "Error al subir imagen.", "error");
+                        return;
+                    }
+
+                    imageInput.value = "";
+                    setStatus("Imagen subida correctamente.", "success");
+                    closeModal(uploadModalEl);
+                    await browse(currentPath);
+                } catch (error) {
+                    setStatus("Error de conexión al subir.", "error");
+                } finally {
+                    setBusy(false);
+                }
+            });
+
+            createFolderBtn.addEventListener("click", async () => {
+                const folderName = newFolderNameInput.value.trim();
+
+                if (!folderName) {
+                    setStatus("Escribe el nombre de la carpeta.", "error");
+                    return;
+                }
+
+                setBusy(true);
+                setStatus("Creando carpeta...", "info");
+
+                try {
+                    const res = await fetch("/api/create-folder", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "ngrok-skip-browser-warning": "true"
+                        },
+                        body: JSON.stringify({
+                            currentPath,
+                            folderName
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        setStatus(data.error || "Error al crear carpeta.", "error");
+                        return;
+                    }
+
+                    newFolderNameInput.value = "";
+                    setStatus("Carpeta creada correctamente.", "success");
+                    closeModal(folderModalEl);
+                    await browse(currentPath);
+                } catch (error) {
+                    setStatus("Error de conexión al crear carpeta.", "error");
+                } finally {
+                    setBusy(false);
+                }
+            });
+
+            searchInput.addEventListener("input", () => {
+                browse(currentPath);
+            });
+
+            loadMoreBtn.addEventListener("click", () => {
+                loadMore();
+            });
+
+            try {
+                const io = new IntersectionObserver((entries) => {
+                    if (entries.some((e) => e.isIntersecting)) {
+                        loadMore();
+                    }
+                });
+                io.observe(sentinelEl);
+            } catch (_) { }
+
+            const savedPath = localStorage.getItem("currentPath") || "";
+            browse(savedPath);
+            refreshViewButtons();
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener("click", () => {
+                    const next = rootEl.classList.contains("dark") ? "light" : "dark";
+                    localStorage.setItem("theme", next);
+                    if (window.__setTheme) {
+                        window.__setTheme(next);
+                    } else {
+                        if (next === "dark") {
+                            rootEl.classList.add("dark");
+                            rootEl.setAttribute("data-bs-theme", "dark");
+                        } else {
+                            rootEl.classList.remove("dark");
+                            rootEl.setAttribute("data-bs-theme", "light");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

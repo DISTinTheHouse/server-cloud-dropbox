@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archivos (Drive)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    h1,h2,h3,.brand-font { font-family: 'Poppins', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148,163,184,.55); border-radius: 999px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .no-scrollbar::-webkit-scrollbar { width: 0px; height: 0px; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          boxShadow: { soft: '0 12px 36px -18px rgba(15, 23, 42, 0.45)' }
+        }
+      }
+    }
+  </script>
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const key = 'erp-theme';
+      function apply(mode) {
+        const isDark = mode === 'dark';
+        root.classList.toggle('dark', isDark);
+        root.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+      }
+      const saved = localStorage.getItem(key);
+      const preferred = (saved === 'dark' || saved === 'light')
+        ? saved
+        : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      apply(preferred);
+      window.__erpTheme = {
+        toggle() {
+          const cur = root.classList.contains('dark') ? 'dark' : 'light';
+          const next = cur === 'dark' ? 'light' : 'dark';
+          localStorage.setItem(key, next);
+          apply(next);
+        }
+      };
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-rose-500 selection:text-white">
+  <div class="pointer-events-none fixed inset-0 z-0">
+    <div class="absolute -top-24 -right-24 w-[520px] h-[520px] bg-rose-500/10 blur-3xl rounded-full"></div>
+    <div class="absolute -bottom-32 -left-24 w-[520px] h-[520px] bg-slate-500/10 blur-3xl rounded-full"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(244,63,94,0.06),_transparent_55%)]"></div>
+  </div>
+
+  <div class="relative z-10 min-h-screen flex">
+    <aside class="hidden lg:flex w-72 shrink-0 flex-col border-r border-slate-200/70 dark:border-white/10 bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl">
+      <div class="px-5 py-5 border-b border-slate-200/70 dark:border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/40 dark:border-rose-500/20 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <div class="brand-font font-semibold tracking-tight">ERP System</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Archivos & documentos</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <a href="principal.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors">
+          <span class="h-9 w-9 rounded-lg border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"></path></svg>
+          </span>
+          Inicio
+        </a>
+        <a href="crm_dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors">
+          <span class="h-9 w-9 rounded-lg border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+          </span>
+          CRM & Ventas
+        </a>
+        <a href="wms/index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors">
+          <span class="h-9 w-9 rounded-lg border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+          </span>
+          WMS
+        </a>
+        <a href="drive.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold bg-rose-600 text-white shadow-lg shadow-rose-600/20">
+          <span class="h-9 w-9 rounded-lg bg-white/15 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg>
+          </span>
+          Archivos
+        </a>
+      </nav>
+
+      <div class="mt-auto p-4 border-t border-slate-200/70 dark:border-white/10">
+        <div class="rounded-xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 p-4">
+          <div class="flex items-center justify-between">
+            <div class="text-sm font-semibold">Almacenamiento</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400" id="storageText">—</div>
+          </div>
+          <div class="mt-3 h-2 rounded-full bg-slate-200/70 dark:bg-white/10 overflow-hidden">
+            <div id="storageBar" class="h-full w-0 bg-rose-600"></div>
+          </div>
+          <div class="mt-3 text-xs text-slate-500 dark:text-slate-400">Simulación local (sin backend)</div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex-1 min-w-0 flex flex-col">
+      <header class="sticky top-0 z-30 bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border-b border-slate-200/70 dark:border-white/10">
+        <div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 py-4 flex items-center gap-3">
+          <button id="mobileNavBtn" type="button" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" aria-label="Abrir menú">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
+
+          <div class="min-w-0">
+            <div class="brand-font text-lg font-semibold tracking-tight">Archivos</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Gestión de carpetas, archivos y vistas</div>
+          </div>
+
+          <div class="flex-1 hidden md:block max-w-2xl mx-4">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+              <input id="searchInput" type="text" class="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm" placeholder="Buscar en esta carpeta (nombre, tipo)...">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="window.__erpTheme.toggle()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" aria-label="Cambiar tema">
+              <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+              <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+            </button>
+            <button id="btnUpload" type="button" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/5 dark:bg-white/5 hover:bg-rose-500/10 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"></path></svg>
+              Subir
+            </button>
+            <button id="btnNewFolder" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold shadow-lg shadow-rose-600/20 hover:shadow-rose-600/30 transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              Nuevo
+            </button>
+            <div class="h-9 w-9 rounded-xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 pb-3">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-2 min-w-0">
+              <button id="btnBack" type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                Atrás
+              </button>
+              <nav class="min-w-0 flex items-center gap-1 text-sm" aria-label="Breadcrumb">
+                <button type="button" class="crumb px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/5 transition-colors font-semibold" data-idx="0">Inicio</button>
+                <span class="text-slate-400">/</span>
+                <div id="crumbs" class="min-w-0 flex items-center gap-1 overflow-x-auto no-scrollbar"></div>
+              </nav>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="btnToggleView" type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                <svg id="viewIcon" class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h7M4 12h7M4 18h7M15 6h5M15 12h5M15 18h5"></path></svg>
+                <span id="viewLabel">Lista</span>
+              </button>
+              <select id="sortSelect" class="px-3 py-1.5 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm font-semibold">
+                <option value="name_asc">Nombre (A–Z)</option>
+                <option value="name_desc">Nombre (Z–A)</option>
+                <option value="modified_desc">Modificado (reciente)</option>
+                <option value="modified_asc">Modificado (antiguo)</option>
+                <option value="size_desc">Tamaño (mayor)</option>
+                <option value="size_asc">Tamaño (menor)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="flex-1 max-w-[1400px] mx-auto w-full px-4 sm:px-6 py-6">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+          <section class="xl:col-span-3">
+            <div class="rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft p-4">
+              <div class="flex items-center justify-between">
+                <h2 class="brand-font font-semibold">Carpetas</h2>
+                <button id="btnCollapseTree" type="button" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" aria-label="Contraer">
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+              </div>
+              <div class="mt-3 border-t border-slate-200/70 dark:border-white/10 pt-3">
+                <div class="flex items-center gap-2">
+                  <span class="h-9 w-9 rounded-lg border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg>
+                  </span>
+                  <div class="min-w-0">
+                    <div class="text-sm font-semibold">Mi Drive</div>
+                    <div id="pathText" class="text-xs text-slate-500 dark:text-slate-400 truncate">/</div>
+                  </div>
+                </div>
+              </div>
+              <div id="treeWrap" class="mt-4">
+                <div id="folderTree" class="space-y-1 max-h-[420px] overflow-y-auto custom-scrollbar pr-1"></div>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft p-4">
+              <h2 class="brand-font font-semibold">Accesos</h2>
+              <div class="mt-3 space-y-1">
+                <button type="button" class="quickNav w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold" data-target="__recent">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Recientes
+                  </span>
+                  <span id="recentCount" class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                </button>
+                <button type="button" class="quickNav w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold" data-target="__starred">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.519 4.674c.3.921-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.539-1.118l1.519-4.674a1 1 0 00-.363-1.118L2.1 10.101c-.783-.57-.38-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z"></path></svg>
+                    Favoritos
+                  </span>
+                  <span id="starCount" class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="xl:col-span-9">
+            <div class="rounded-xl bg-white/70 dark:bg-slate-900/55 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-soft overflow-hidden">
+              <div class="px-4 md:px-5 py-4 border-b border-slate-200/70 dark:border-white/10 bg-slate-50/70 dark:bg-slate-800/30 flex items-center justify-between gap-3 flex-wrap">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <h2 class="brand-font font-semibold truncate" id="folderTitle">Inicio</h2>
+                    <span id="folderMeta" class="text-xs text-slate-500 dark:text-slate-400">—</span>
+                  </div>
+                  <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sube archivos, crea carpetas y navega por ruta.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button id="btnUpload2" type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"></path></svg>
+                    Subir
+                  </button>
+                  <button id="btnNewFolder2" type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-500 transition-all text-sm font-semibold shadow-lg shadow-rose-600/15">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Carpeta
+                  </button>
+                </div>
+              </div>
+
+              <div id="dropZone" class="hidden">
+                <div class="absolute inset-0 z-20 bg-rose-600/10 backdrop-blur-sm"></div>
+                <div class="absolute inset-0 z-30 flex items-center justify-center p-6">
+                  <div class="w-full max-w-xl rounded-2xl border border-rose-200/60 dark:border-rose-500/20 bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl shadow-2xl p-6 text-center">
+                    <div class="mx-auto h-14 w-14 rounded-2xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/50 dark:border-rose-500/20 flex items-center justify-center">
+                      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    </div>
+                    <div class="mt-4 text-lg brand-font font-semibold">Suelta aquí para subir</div>
+                    <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">Los archivos se agregan a la carpeta actual.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative">
+                <div id="listView" class="block">
+                  <div class="overflow-x-auto custom-scrollbar">
+                    <table class="min-w-full text-sm">
+                      <thead class="bg-white/50 dark:bg-slate-900/20 text-slate-600 dark:text-slate-300">
+                        <tr class="text-[11px] uppercase tracking-wider font-bold">
+                          <th class="px-4 py-3 text-left">Nombre</th>
+                          <th class="px-4 py-3 text-left">Tipo</th>
+                          <th class="px-4 py-3 text-left">Modificado</th>
+                          <th class="px-4 py-3 text-right">Tamaño</th>
+                          <th class="px-4 py-3 text-right">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody id="itemsTbody" class="divide-y divide-slate-200/70 dark:divide-white/10 bg-white/60 dark:bg-slate-900/20"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div id="gridView" class="hidden p-4 md:p-5">
+                  <div id="gridWrap" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3"></div>
+                </div>
+              </div>
+
+              <div id="emptyState" class="hidden p-8 text-center">
+                <div class="mx-auto h-14 w-14 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg>
+                </div>
+                <div class="mt-4 brand-font font-semibold text-lg">Carpeta vacía</div>
+                <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">Crea una carpeta o sube archivos para empezar.</div>
+                <div class="mt-5 flex items-center justify-center gap-2">
+                  <button id="btnEmptyUpload" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"></path></svg>
+                    Subir archivos
+                  </button>
+                  <button id="btnEmptyFolder" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-semibold shadow-lg shadow-rose-600/15">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Crear carpeta
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <input id="fileInput" class="hidden" type="file" multiple />
+
+  <div id="modalNew" class="hidden fixed inset-0 z-[80]">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-white/10 shadow-2xl overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-200/70 dark:border-white/10 bg-slate-50/70 dark:bg-slate-800/30 flex items-center justify-between">
+          <div>
+            <h3 class="brand-font font-semibold">Crear carpeta</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Se crea en la carpeta actual</p>
+          </div>
+          <button type="button" data-close="modalNew" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" aria-label="Cerrar">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <form id="newFolderForm" class="p-5 space-y-4">
+          <div>
+            <label class="text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Nombre</label>
+            <input id="newFolderName" type="text" class="mt-1 w-full px-3 py-2 rounded-lg bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/80 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500/40 transition-all text-sm" placeholder="Ej: Contratos 2026" />
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <button type="button" data-close="modalNew" class="px-4 py-2 rounded-lg bg-white/70 dark:bg-slate-900/35 border border-slate-200/70 dark:border-white/10 hover:border-rose-200 dark:hover:border-rose-500/20 transition-all text-sm font-semibold">Cancelar</button>
+            <button type="submit" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all text-sm font-semibold shadow-lg shadow-rose-600/15">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastHost" class="fixed z-[90] bottom-4 right-4 w-full max-w-sm space-y-2 px-4 md:px-0"></div>
+
+  <div id="mobileNav" class="hidden fixed inset-0 z-[70] lg:hidden">
+    <div id="mobileNavOverlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="absolute inset-y-0 left-0 w-[320px] max-w-[90vw] bg-white dark:bg-slate-900 border-r border-slate-200/70 dark:border-white/10 shadow-2xl">
+      <div class="px-5 py-5 border-b border-slate-200/70 dark:border-white/10 flex items-center justify-between">
+        <div class="brand-font font-semibold">ERP System</div>
+        <button id="mobileNavClose" type="button" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" aria-label="Cerrar">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-3 space-y-1">
+        <a href="principal.html" class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">Inicio</a>
+        <a href="crm_dashboard.html" class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">CRM & Ventas</a>
+        <a href="wms/index.html" class="block px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">WMS</a>
+        <a href="drive.html" class="block px-3 py-2 rounded-lg text-sm font-semibold bg-rose-600 text-white">Archivos</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", "&#039;");
+    const fmtSize = (bytes) => {
+      const b = Number(bytes || 0);
+      if (b < 1024) return `${b} B`;
+      const kb = b / 1024;
+      if (kb < 1024) return `${kb.toFixed(kb < 10 ? 1 : 0)} KB`;
+      const mb = kb / 1024;
+      if (mb < 1024) return `${mb.toFixed(mb < 10 ? 1 : 0)} MB`;
+      const gb = mb / 1024;
+      return `${gb.toFixed(gb < 10 ? 1 : 0)} GB`;
+    };
+    const fmtDate = (ts) => {
+      const d = new Date(ts);
+      const opts = { year: 'numeric', month: 'short', day: '2-digit' };
+      return d.toLocaleDateString('es-MX', opts);
+    };
+    const toast = (msg, tone = 'ok') => {
+      const host = $('toastHost');
+      const tones = { ok: 'bg-rose-600', warn: 'bg-amber-500', err: 'bg-red-600', info: 'bg-slate-900' };
+      const el = document.createElement('div');
+      el.className = `rounded-xl shadow-2xl border border-white/10 px-4 py-3 ${tones[tone] || tones.ok} text-white flex items-start justify-between gap-3`;
+      el.innerHTML = `<div class="text-sm font-semibold">${esc(msg)}</div><button type="button" class="text-white/80 hover:text-white transition-colors" aria-label="Cerrar"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+      el.querySelector('button').addEventListener('click', () => el.remove());
+      host.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    };
+
+    const FS_KEY = 'erp-drive-fs-v1';
+    const defaultFs = () => ({
+      root: {
+        id: 'root',
+        name: '',
+        type: 'folder',
+        modifiedAt: Date.now(),
+        children: [
+          { id: crypto.randomUUID(), name: 'Clientes', type: 'folder', modifiedAt: Date.now() - 1000 * 60 * 60 * 6, children: [
+            { id: crypto.randomUUID(), name: 'Contrato_Marzo.pdf', type: 'file', ext: 'pdf', size: 824512, modifiedAt: Date.now() - 1000 * 60 * 80 },
+            { id: crypto.randomUUID(), name: 'Ficha_Tecnica.xlsx', type: 'file', ext: 'xlsx', size: 204800, modifiedAt: Date.now() - 1000 * 60 * 220 }
+          ]},
+          { id: crypto.randomUUID(), name: 'Operación', type: 'folder', modifiedAt: Date.now() - 1000 * 60 * 60 * 20, children: [
+            { id: crypto.randomUUID(), name: 'Layout_Almacén.png', type: 'file', ext: 'png', size: 1452100, modifiedAt: Date.now() - 1000 * 60 * 60 * 18 }
+          ]},
+          { id: crypto.randomUUID(), name: 'Plantillas', type: 'folder', modifiedAt: Date.now() - 1000 * 60 * 60 * 30, children: []},
+          { id: crypto.randomUUID(), name: 'Notas_Reunión.txt', type: 'file', ext: 'txt', size: 3900, modifiedAt: Date.now() - 1000 * 60 * 12 }
+        ]
+      },
+      starred: new Set(),
+      recent: []
+    });
+
+    const loadFs = () => {
+      try {
+        const raw = localStorage.getItem(FS_KEY);
+        if (!raw) return defaultFs();
+        const parsed = JSON.parse(raw);
+        parsed.starred = new Set(parsed.starred || []);
+        parsed.recent = Array.isArray(parsed.recent) ? parsed.recent : [];
+        return parsed;
+      } catch {
+        return defaultFs();
+      }
+    };
+    const saveFs = () => {
+      const toSave = { ...fs, starred: Array.from(fs.starred) };
+      localStorage.setItem(FS_KEY, JSON.stringify(toSave));
+    };
+    const fs = loadFs();
+
+    let path = ['root'];
+    let view = 'list';
+    let quickMode = null;
+    const state = { q: '', sort: 'name_asc' };
+
+    const openModal = (id) => $(id).classList.remove('hidden');
+    const closeModal = (id) => $(id).classList.add('hidden');
+    document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeModal(btn.dataset.close)));
+
+    const findNodeById = (node, id) => {
+      if (!node) return null;
+      if (node.id === id) return node;
+      if (node.type !== 'folder') return null;
+      for (const ch of (node.children || [])) {
+        const hit = findNodeById(ch, id);
+        if (hit) return hit;
+      }
+      return null;
+    };
+    const getCurrentFolder = () => findNodeById(fs.root, path[path.length - 1]);
+    const getPathNodes = () => path.map(id => findNodeById(fs.root, id)).filter(Boolean);
+    const setPath = (next) => {
+      quickMode = null;
+      path = next;
+      renderAll();
+    };
+    const pushRecent = (itemId) => {
+      const now = Date.now();
+      fs.recent = [{ id: itemId, at: now }, ...fs.recent.filter(r => r.id !== itemId)].slice(0, 20);
+      saveFs();
+      updateSideCounts();
+    };
+    const totalSize = (node) => {
+      if (!node) return 0;
+      if (node.type === 'file') return Number(node.size || 0);
+      return (node.children || []).reduce((acc, ch) => acc + totalSize(ch), 0);
+    };
+    const fileIcon = (ext) => {
+      const e = String(ext || '').toLowerCase();
+      if (e === 'pdf') return { bg: 'bg-red-500/10', fg: 'text-red-600 dark:text-red-300', label: 'PDF' };
+      if (e === 'xlsx' || e === 'xls' || e === 'csv') return { bg: 'bg-emerald-500/10', fg: 'text-emerald-600 dark:text-emerald-300', label: 'XLS' };
+      if (e === 'png' || e === 'jpg' || e === 'jpeg' || e === 'webp') return { bg: 'bg-indigo-500/10', fg: 'text-indigo-600 dark:text-indigo-300', label: 'IMG' };
+      if (e === 'doc' || e === 'docx') return { bg: 'bg-sky-500/10', fg: 'text-sky-600 dark:text-sky-300', label: 'DOC' };
+      return { bg: 'bg-slate-500/10', fg: 'text-slate-600 dark:text-slate-300', label: (e || 'FILE').slice(0, 4).toUpperCase() };
+    };
+
+    const sortItems = (items) => {
+      const mode = state.sort;
+      const folderFirst = (a, b) => (a.type === b.type ? 0 : (a.type === 'folder' ? -1 : 1));
+      const byName = (a, b) => String(a.name).localeCompare(String(b.name), 'es', { numeric: true, sensitivity: 'base' });
+      const byModified = (a, b) => Number(a.modifiedAt || 0) - Number(b.modifiedAt || 0);
+      const bySize = (a, b) => Number(a.size || 0) - Number(b.size || 0);
+      const dir = mode.endsWith('_desc') ? -1 : 1;
+      const key = mode.split('_')[0];
+      return items.slice().sort((a, b) => {
+        const ff = folderFirst(a, b);
+        if (ff !== 0) return ff;
+        if (key === 'modified') return byModified(a, b) * dir;
+        if (key === 'size') return bySize(a, b) * dir;
+        return byName(a, b) * dir;
+      });
+    };
+
+    const queryFilter = (items) => {
+      const q = state.q.trim().toLowerCase();
+      if (!q) return items;
+      return items.filter(it => {
+        const typeLabel = it.type === 'folder' ? 'carpeta' : (it.ext || 'archivo');
+        return `${it.name} ${typeLabel}`.toLowerCase().includes(q);
+      });
+    };
+
+    const flattenFiles = (node, out = []) => {
+      if (!node) return out;
+      if (node.type === 'file') out.push(node);
+      if (node.type === 'folder') (node.children || []).forEach(ch => flattenFiles(ch, out));
+      return out;
+    };
+
+    const computeQuickItems = () => {
+      if (quickMode === '__recent') {
+        const byId = new Map(flattenFiles(fs.root).map(f => [f.id, f]));
+        const items = fs.recent.map(r => byId.get(r.id)).filter(Boolean).slice(0, 30);
+        return items.map(it => ({ ...it, modifiedAt: it.modifiedAt || Date.now() }));
+      }
+      if (quickMode === '__starred') {
+        const all = [...flattenFiles(fs.root), ...collectFolders(fs.root)];
+        return all.filter(it => fs.starred.has(it.id));
+      }
+      return null;
+    };
+
+    const collectFolders = (node, out = []) => {
+      if (!node || node.type !== 'folder') return out;
+      if (node.id !== 'root') out.push(node);
+      (node.children || []).forEach(ch => collectFolders(ch, out));
+      return out;
+    };
+
+    const renderCrumbs = () => {
+      const wrap = $('crumbs');
+      wrap.innerHTML = '';
+      const nodes = getPathNodes();
+      nodes.slice(1).forEach((n, i) => {
+        const idx = i + 1;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'crumb px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/5 transition-colors font-semibold shrink-0';
+        btn.dataset.idx = String(idx);
+        btn.textContent = n.name || 'Inicio';
+        wrap.appendChild(btn);
+        if (idx < nodes.length - 1) {
+          const sep = document.createElement('span');
+          sep.className = 'text-slate-400 shrink-0';
+          sep.textContent = '/';
+          wrap.appendChild(sep);
+        }
+      });
+      $('pathText').textContent = '/' + nodes.slice(1).map(n => n.name).join('/');
+      $('btnBack').disabled = path.length <= 1 && !quickMode;
+      $('btnBack').classList.toggle('opacity-50', $('btnBack').disabled);
+      $('btnBack').classList.toggle('cursor-not-allowed', $('btnBack').disabled);
+    };
+
+    const renderTree = () => {
+      const tree = $('folderTree');
+      tree.innerHTML = '';
+      const folders = collectFolders(fs.root);
+      const build = (folder, level) => {
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors text-sm font-semibold text-left';
+        row.dataset.id = folder.id;
+        row.style.paddingLeft = `${12 + level * 14}px`;
+        const active = !quickMode && path[path.length - 1] === folder.id;
+        if (active) row.classList.add('bg-rose-500/10', 'border', 'border-rose-200/60', 'dark:border-rose-500/20');
+        row.innerHTML = `<svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg><span class="truncate">${esc(folder.name)}</span>`;
+        tree.appendChild(row);
+        (folder.children || []).filter(ch => ch.type === 'folder').forEach(ch => build(ch, level + 1));
+      };
+      (fs.root.children || []).filter(ch => ch.type === 'folder').forEach(ch => build(ch, 0));
+    };
+
+    const rowActions = (item) => {
+      const starred = fs.starred.has(item.id);
+      const starCls = starred ? 'text-amber-500' : 'text-slate-400 hover:text-amber-500';
+      return `
+        <button type="button" class="btnStar p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors ${starCls}" data-id="${esc(item.id)}" aria-label="Favorito">
+          <svg class="w-4 h-4" fill="${starred ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.519 4.674c.3.921-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.539-1.118l1.519-4.674a1 1 0 00-.363-1.118L2.1 10.101c-.783-.57-.38-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z"></path></svg>
+        </button>
+        <button type="button" class="btnOpen p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-slate-400 hover:text-rose-500" data-id="${esc(item.id)}" aria-label="Abrir">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      `;
+    };
+
+    const renderList = (items) => {
+      const tbody = $('itemsTbody');
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-rose-50/40 dark:hover:bg-rose-500/5 transition-colors';
+        const type = item.type === 'folder' ? 'Carpeta' : (String(item.ext || 'Archivo').toUpperCase());
+        const size = item.type === 'folder' ? '—' : fmtSize(item.size || 0);
+        const mod = fmtDate(item.modifiedAt || Date.now());
+        const icon = item.type === 'folder'
+          ? `<div class="h-9 w-9 rounded-xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/40 dark:border-rose-500/20 flex items-center justify-center"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg></div>`
+          : (() => {
+            const meta = fileIcon(item.ext);
+            return `<div class="h-9 w-9 rounded-xl ${meta.bg} ${meta.fg} border border-slate-200/60 dark:border-white/10 flex items-center justify-center font-mono text-xs font-bold">${esc(meta.label)}</div>`;
+          })();
+        tr.innerHTML = `
+          <td class="px-4 py-3">
+            <button type="button" class="btnOpen w-full flex items-center gap-3 text-left" data-id="${esc(item.id)}">
+              ${icon}
+              <div class="min-w-0">
+                <div class="font-semibold truncate">${esc(item.name)}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${item.type === 'folder' ? `${(item.children || []).length} ítems` : 'Archivo'}</div>
+              </div>
+            </button>
+          </td>
+          <td class="px-4 py-3 text-slate-700 dark:text-slate-200">${esc(type)}</td>
+          <td class="px-4 py-3 text-slate-700 dark:text-slate-200">${esc(mod)}</td>
+          <td class="px-4 py-3 text-right font-mono font-semibold text-slate-700 dark:text-slate-200">${esc(size)}</td>
+          <td class="px-4 py-3 text-right">
+            <div class="inline-flex items-center gap-1 justify-end">
+              ${rowActions(item)}
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    };
+
+    const renderGrid = (items) => {
+      const wrap = $('gridWrap');
+      wrap.innerHTML = '';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'group rounded-xl border border-slate-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-900/20 hover:bg-rose-50/40 dark:hover:bg-rose-500/5 transition-colors p-3';
+        const icon = item.type === 'folder'
+          ? `<div class="h-10 w-10 rounded-xl bg-rose-600/10 text-rose-600 dark:text-rose-300 dark:bg-rose-500/10 border border-rose-200/40 dark:border-rose-500/20 flex items-center justify-center"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"></path></svg></div>`
+          : (() => {
+            const meta = fileIcon(item.ext);
+            return `<div class="h-10 w-10 rounded-xl ${meta.bg} ${meta.fg} border border-slate-200/60 dark:border-white/10 flex items-center justify-center font-mono text-xs font-bold">${esc(meta.label)}</div>`;
+          })();
+        card.innerHTML = `
+          <button type="button" class="btnOpen w-full text-left" data-id="${esc(item.id)}">
+            <div class="flex items-start justify-between gap-2">
+              ${icon}
+              <div class="inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                ${rowActions(item)}
+              </div>
+            </div>
+            <div class="mt-3 font-semibold truncate">${esc(item.name)}</div>
+            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">${item.type === 'folder' ? `${(item.children || []).length} ítems` : fmtSize(item.size || 0)}</div>
+          </button>
+        `;
+        wrap.appendChild(card);
+      });
+    };
+
+    const renderHeaderMeta = (items, baseLabel) => {
+      $('folderTitle').textContent = baseLabel;
+      $('folderMeta').textContent = `${items.length} ítems`;
+      const used = totalSize(fs.root);
+      const cap = 25 * 1024 * 1024 * 1024;
+      const pct = Math.min(100, Math.round((used / cap) * 100));
+      $('storageText').textContent = `${fmtSize(used)} / ${fmtSize(cap)}`;
+      $('storageBar').style.width = `${pct}%`;
+    };
+
+    const updateSideCounts = () => {
+      $('recentCount').textContent = String(fs.recent.length);
+      $('starCount').textContent = String(fs.starred.size);
+    };
+
+    const renderAll = () => {
+      const folder = getCurrentFolder();
+      const baseItems = quickMode ? (computeQuickItems() || []) : (folder?.children || []);
+      const filtered = queryFilter(sortItems(baseItems));
+      renderCrumbs();
+      renderTree();
+      updateSideCounts();
+      $('emptyState').classList.toggle('hidden', filtered.length !== 0);
+      const label = quickMode === '__recent' ? 'Recientes' : (quickMode === '__starred' ? 'Favoritos' : ((folder?.name) || 'Inicio'));
+      renderHeaderMeta(filtered, label);
+      if (view === 'list') {
+        $('listView').classList.remove('hidden');
+        $('gridView').classList.add('hidden');
+        renderList(filtered);
+      } else {
+        $('listView').classList.add('hidden');
+        $('gridView').classList.remove('hidden');
+        renderGrid(filtered);
+      }
+    };
+
+    const openItem = (id) => {
+      const node = findNodeById(fs.root, id);
+      if (!node) return;
+      if (node.type === 'folder') {
+        const nodes = [];
+        const walk = (cur, target, stack) => {
+          if (cur.id === target) { nodes.push(...stack, cur.id); return true; }
+          if (cur.type !== 'folder') return false;
+          for (const ch of (cur.children || [])) {
+            if (ch.type !== 'folder') continue;
+            if (walk(ch, target, [...stack, cur.id])) return true;
+          }
+          return false;
+        };
+        walk(fs.root, node.id, []);
+        const nextPath = nodes.length ? nodes : ['root', node.id];
+        setPath(nextPath);
+        pushRecent(node.id);
+        return;
+      }
+      pushRecent(node.id);
+      toast(`Abrir: ${node.name} (simulación)`, 'info');
+    };
+
+    const createFolder = (name) => {
+      const folder = getCurrentFolder();
+      if (!folder || folder.type !== 'folder') return;
+      const clean = String(name || '').trim();
+      if (!clean) { toast('Nombre requerido', 'warn'); return; }
+      const exists = (folder.children || []).some(ch => ch.type === 'folder' && String(ch.name).toLowerCase() === clean.toLowerCase());
+      if (exists) { toast('Ya existe una carpeta con ese nombre', 'warn'); return; }
+      folder.children = folder.children || [];
+      folder.children.unshift({ id: crypto.randomUUID(), name: clean, type: 'folder', modifiedAt: Date.now(), children: [] });
+      folder.modifiedAt = Date.now();
+      saveFs();
+      toast('Carpeta creada', 'ok');
+      renderAll();
+    };
+
+    const uploadFiles = (fileList) => {
+      const folder = getCurrentFolder();
+      if (!folder || folder.type !== 'folder') return;
+      const files = Array.from(fileList || []);
+      if (!files.length) return;
+      folder.children = folder.children || [];
+      const now = Date.now();
+      files.forEach(f => {
+        const parts = String(f.name || 'archivo').split('.');
+        const ext = parts.length > 1 ? parts.pop() : '';
+        folder.children.unshift({ id: crypto.randomUUID(), name: f.name, type: 'file', ext, size: f.size || 0, modifiedAt: now });
+      });
+      folder.modifiedAt = now;
+      saveFs();
+      toast(`${files.length} archivo(s) subido(s)`, 'ok');
+      renderAll();
+    };
+
+    $('btnNewFolder').addEventListener('click', () => { $('newFolderName').value = ''; openModal('modalNew'); setTimeout(() => $('newFolderName').focus(), 10); });
+    $('btnNewFolder2').addEventListener('click', () => { $('newFolderName').value = ''; openModal('modalNew'); setTimeout(() => $('newFolderName').focus(), 10); });
+    $('btnEmptyFolder').addEventListener('click', () => { $('newFolderName').value = ''; openModal('modalNew'); setTimeout(() => $('newFolderName').focus(), 10); });
+    $('newFolderForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      createFolder($('newFolderName').value);
+      closeModal('modalNew');
+    });
+
+    const fileInput = $('fileInput');
+    const openUpload = () => fileInput.click();
+    $('btnUpload').addEventListener('click', openUpload);
+    $('btnUpload2').addEventListener('click', openUpload);
+    $('btnEmptyUpload').addEventListener('click', openUpload);
+    fileInput.addEventListener('change', (e) => {
+      uploadFiles(e.target.files);
+      e.target.value = '';
+    });
+
+    $('searchInput').addEventListener('input', (e) => { state.q = e.target.value; renderAll(); });
+    $('sortSelect').addEventListener('change', (e) => { state.sort = e.target.value; renderAll(); });
+
+    const setView = (next) => {
+      view = next;
+      $('viewLabel').textContent = view === 'list' ? 'Lista' : 'Cuadrícula';
+      $('viewIcon').innerHTML = view === 'list'
+        ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h7M4 12h7M4 18h7M15 6h5M15 12h5M15 18h5"></path>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"></path>';
+      renderAll();
+    };
+    $('btnToggleView').addEventListener('click', () => setView(view === 'list' ? 'grid' : 'list'));
+
+    document.addEventListener('click', (e) => {
+      const crumb = e.target.closest('.crumb');
+      if (crumb) {
+        const idx = Number(crumb.dataset.idx || 0);
+        if (!Number.isFinite(idx)) return;
+        setPath(path.slice(0, idx + 1));
+        return;
+      }
+      const openBtn = e.target.closest('.btnOpen');
+      if (openBtn) { openItem(openBtn.dataset.id); return; }
+      const starBtn = e.target.closest('.btnStar');
+      if (starBtn) {
+        const id = starBtn.dataset.id;
+        if (fs.starred.has(id)) fs.starred.delete(id); else fs.starred.add(id);
+        saveFs();
+        updateSideCounts();
+        renderAll();
+        return;
+      }
+      const treeBtn = e.target.closest('[data-id]');
+      if (treeBtn && treeBtn.parentElement && treeBtn.parentElement.id === 'folderTree') {
+        const id = treeBtn.dataset.id;
+        const nodes = [];
+        const walk = (cur, target, stack) => {
+          if (cur.id === target) { nodes.push(...stack, cur.id); return true; }
+          if (cur.type !== 'folder') return false;
+          for (const ch of (cur.children || [])) {
+            if (ch.type !== 'folder') continue;
+            if (walk(ch, target, [...stack, cur.id])) return true;
+          }
+          return false;
+        };
+        walk(fs.root, id, []);
+        setPath(nodes.length ? nodes : ['root', id]);
+        return;
+      }
+      const quick = e.target.closest('.quickNav');
+      if (quick) {
+        quickMode = quick.dataset.target;
+        state.q = '';
+        $('searchInput').value = '';
+        renderAll();
+      }
+    });
+
+    $('btnBack').addEventListener('click', () => {
+      if (quickMode) { quickMode = null; renderAll(); return; }
+      if (path.length <= 1) return;
+      setPath(path.slice(0, path.length - 1));
+    });
+
+    const dz = $('dropZone');
+    let dragDepth = 0;
+    const showDrop = () => dz.classList.remove('hidden');
+    const hideDrop = () => dz.classList.add('hidden');
+    document.addEventListener('dragenter', (e) => {
+      if (!e.dataTransfer || !Array.from(e.dataTransfer.types || []).includes('Files')) return;
+      dragDepth += 1;
+      showDrop();
+    });
+    document.addEventListener('dragleave', (e) => {
+      if (!e.dataTransfer) return;
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (dragDepth === 0) hideDrop();
+    });
+    document.addEventListener('dragover', (e) => {
+      if (!e.dataTransfer) return;
+      e.preventDefault();
+    });
+    document.addEventListener('drop', (e) => {
+      if (!e.dataTransfer) return;
+      e.preventDefault();
+      dragDepth = 0;
+      hideDrop();
+      uploadFiles(e.dataTransfer.files);
+    });
+
+    $('btnCollapseTree').addEventListener('click', () => {
+      $('treeWrap').classList.toggle('hidden');
+    });
+
+    const mobileNav = $('mobileNav');
+    const openMobile = () => mobileNav.classList.remove('hidden');
+    const closeMobile = () => mobileNav.classList.add('hidden');
+    $('mobileNavBtn').addEventListener('click', openMobile);
+    $('mobileNavClose').addEventListener('click', closeMobile);
+    $('mobileNavOverlay').addEventListener('click', closeMobile);
+
+    renderAll();
+  </script>
+</body>
+</html>
