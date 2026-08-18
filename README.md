@@ -5,6 +5,9 @@
 - Mini-agente Windows opcional que habilita abrir rutas UNC directamente desde el navegador (empresa-drive://).
 - Actualización automática del listado de archivos mediante eventos de filesystem (watch + SSE).
 
+- <img width="1645" height="876" alt="image" src="https://github.com/user-attachments/assets/32108b1c-80ec-40a5-a373-273df599d49e" />
+
+
 ## Rutas de Servidor (convención)
 - Proyecto (código): E:\servidor-archivos
 - Contenido compartido (edición de usuarios): E:\servidor-app-archivos
@@ -94,3 +97,4 @@ Como tienes una cuenta de pago y un dominio reservado, ya no cambiará tu URL.
 Tus APIs externas y el panel estarán siempre disponibles en:
 - **`https://erpcloud.ngrok.app`**
 
+<img width="1627" height="901" alt="image" src="https://github.com/user-attachments/assets/20f4493c-903c-41d4-a851-df08867548f1" />
